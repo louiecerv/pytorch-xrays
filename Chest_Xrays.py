@@ -9,9 +9,8 @@ import time
 # Define the Streamlit app
 def app():
 
-
-    text = """Louie F. Cervantes, M. Eng. (Information Engineering) \n\n
-    CCS 229 - Intelligent Systems
+    text = """Louie F. Cervantes, M. Eng. (Information Engineering)
+    \nCCS 229 - Intelligent Systems
     Computer Science Department
     College of Information and Communications Technology
     West Visayas State University"""
