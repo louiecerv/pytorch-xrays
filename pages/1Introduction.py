@@ -105,12 +105,12 @@ def show_model_summary(model, input_size):
         model: PyTorch model object.
         input_size: Input size for the model (tuple).
     """
-    st.header("Model Summary")
+    st.subheader("Model Summary")
 
     # Capture model summary as string using StringIO
     from io import StringIO
     buffer = StringIO()
-    summary(model, input_size=(3, 224, 224))
+    summary(model, input_size=(3, 224, 224), col_width=80, print_fn=lambda x: buffer.write(x + "\n"))
     summary_str = buffer.getvalue()
 
     # Display the summary string
