@@ -17,7 +17,8 @@ from torch.utils.data import DataLoader
 import torch.nn.functional as F
 from torchvision import datasets, transforms, models
 from torch.optim.lr_scheduler import StepLR
-from torchsummary import summary
+#from torchsummary import summary
+import torchsummary
 from tqdm import tqdm
 
 class_name = ['NORMAL','PNEUMONIA']
@@ -96,7 +97,8 @@ def app():
         device = torch.device("cuda" if use_cuda else "cpu")
         st.write("Available processor {}".format(device))
         model = Net().to(device)
-        show_model_summary(model, input_size=(3, 224, 224))
+        #show_model_summary(model, input_size=(3, 224, 224))
+        st.write(torchsummary.summary_string(model, input_size=(3, 224, 224)))
 
 
 def show_model_summary(model, input_size):
