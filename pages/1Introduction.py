@@ -2,62 +2,51 @@
 import numpy as np
 import pandas as pd
 import streamlit as st
-import altair as alt
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn import tree
-from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import confusion_matrix
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
+import os
+import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+%matplotlib inline
+from PIL import Image
+from IPython.display import display
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader
+import torch.nn.functional as F
+from torchvision import datasets, transforms, models
+from torch.optim.lr_scheduler import StepLR
+from torchsummary import summary
+from tqdm import tqdm
+
+class_name = ['NORMAL','PNEUMONIA']
+
+def get_list_files(dirName):
+    """
+    input - directory location
+    output - list the files in the directory
+    """
+    files_list = os.listdir(dirName)
+    return files_list
 
 # Define the Streamlit app
 def app():
 
-    st.subheader('The task: Classify handwritten digits from 0 to 9 based on a given image.')
-    text = """Dataset: MNIST - 70,000 images of handwritten digits (28x28 pixels), each labeled 
-    with its corresponding digit (0-9).
-    \nModels:
-    \nK-Nearest Neighbors (KNN):
-    \nEach image is represented as a 784-dimensional vector (28x28 pixels). 
-    To classify a new image, its distance is measured to K nearest neighbors in the 
-    training data. The majority class label among the neighbors is assigned to the new image.
-    \nDecision Tree:
-    \nA tree-like structure is built based on features (pixel intensities) of the images. 
-    \nThe tree splits the data based on decision rules (e.g., "pixel intensity at 
-    position X is greater than Y"). The new image is navigated through the tree based on 
-    its features, reaching a leaf node representing the predicted digit class.
-    \nRandom Forest:
-    \nAn ensemble of multiple decision trees are built, each trained on a random subset of 
-    features (pixels) and a random subset of data.
-    \nTo classify a new image, it is passed through each decision tree, and the majority class 
-    label from all predictions is assigned."""
+    st.subheader('Chest X-ray Classifier using Pytorch')
+    text = """Insert App Decription"""
     st.write(text)
 
-    X_train = st.session_state['X_train']
-    X_test = st.session_state['X_test']
-    y_train = st.session_state['y_train']
-    y_test = st.session_state['y_test']
-        
-    st.subheader('First 25 images in the MNIST dataset') 
-
-    # Get the first 25 images and reshape them to 28x28 pixels
-    train_images = np.array(X_train)
-    train_labels = np.array(y_train)
-    images = train_images[:25].reshape(-1, 28, 28)
-    # Create a 5x5 grid of subplots
-    fig, axes = plt.subplots(5, 5, figsize=(10, 10))
-    # Plot each image on a separate subplot
-    for i, ax in enumerate(axes.ravel()):
-        ax.imshow(images[i], cmap=plt.cm.binary)
-        ax.set_xticks([])
-        ax.set_yticks([])
-        ax.set_title(f"Digit: {train_labels[i]}")
-    # Show the plot
-    plt.tight_layout()
-    st.pyplot(fig)
-
+    data_path = 'dataset'
+    files_list_normal_train = get_list_files(data_path + '/train/'+class_name[0])
+    files_list_pneu_train = get_list_files(data_path+'/train/'+class_name[1])
+    files_list_normal_test = get_list_files(data_path+'/test/'+class_name[0])
+    files_list_pneu_test = get_list_files(data_path+'/test/'+class_name[1])
+    st.write("Number of train samples in Normal category {}".format(len(files_list_normal_train)))
+    st.write("Number of train samples in Pneumonia category {}".format(len(files_list_pneu_train)))
+    st.write("Number of test samples in Normal category {}".format(len(files_list_normal_test)))
+    st.write("N`umber of test samples in Pneumonia category {}".format(len(files_list_pneu_test)))
 
 #run the app
 if __name__ == "__main__":
