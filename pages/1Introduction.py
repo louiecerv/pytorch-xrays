@@ -98,7 +98,7 @@ def app():
         st.write("Available processor {}".format(device))
         model = Net().to(device)
         #show_model_summary(model, input_size=(3, 224, 224))
-        st.write(torchsummary.summary(model, input_size=(3, 224, 224), verbose=1))
+        st.write(torchsummary.summary(model, input_size=(3, 224, 224)))
 
 
 def show_model_summary(model, input_size):
