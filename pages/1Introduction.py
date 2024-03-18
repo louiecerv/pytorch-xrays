@@ -49,7 +49,7 @@ def app():
 
 
     rand_img_no = np.random.randint(0,len(files_list_normal_train))
-    img = data_path + '/train/NORMAL/'+ files_list_normal_train[rand_img_no]
+    img = data_path + '/training_set/NORMAL/'+ files_list_normal_train[rand_img_no]
     print(plt.imread(img).shape)
     img = mpimg.imread(img)
     # Create a figure and an axes
