@@ -116,13 +116,10 @@ def show_model_summary(model, input_size):
     # Display the summary string
     st.code(summary_str, language="python")
 
-
-
-
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        
+
     # Input Block
     self.convblock1 = nn.Sequential(nn.Conv2d(in_channels=3, out_channels=8,
         kernel_size=(3, 3),
