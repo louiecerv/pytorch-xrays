@@ -18,6 +18,11 @@ from torchvision import datasets, transforms, models
 from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
 
+train_losses = []
+test_losses = []
+train_acc = []
+test_acc = []
+
 class_name = ['NORMAL','PNEUMONIA']
 
 def get_list_files(dirName):
@@ -93,10 +98,7 @@ def app():
         use_cuda = torch.cuda.is_available()
         device = torch.device("cuda" if use_cuda else "cpu")
 
-        train_losses = []
-        test_losses = []
-        train_acc = []
-        test_acc = []
+
 
         model = Net().to(device)
         optimizer = torch.optim.SGD(model.parameters(), lr=0.01,
