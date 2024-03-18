@@ -59,6 +59,16 @@ def app():
     ax.set_title('Randomly Selected Sample Image from the NORMAL Class')
     st.pyplot(fig)
 
+    img = data_path + '/training_set/PNEUMONIA/'+ files_list_pneu_train[np.random.randint(0,len(files_list_pneu_train))]
+    print(plt.imread(img).shape)
+    img = mpimg.imread(img)
+    # Create a figure and an axes
+    fig, ax = plt.subplots()
+    # Display the image
+    ax.imshow(img)
+    ax.set_title('Randomly Selected Sample Image from the PNEUMONIA Class')
+    st.pyplot(fig)
+
 #run the app
 if __name__ == "__main__":
     app()
