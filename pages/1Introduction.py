@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import numpy as np
-import cv2
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from PIL import Image
@@ -17,8 +16,6 @@ from torch.utils.data import DataLoader
 import torch.nn.functional as F
 from torchvision import datasets, transforms, models
 from torch.optim.lr_scheduler import StepLR
-#from torchsummary import summary
-import torchsummary
 from tqdm import tqdm
 
 class_name = ['NORMAL','PNEUMONIA']
