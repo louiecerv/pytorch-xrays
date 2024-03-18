@@ -47,6 +47,18 @@ def app():
     st.write("Number of test samples in Normal category {}".format(len(files_list_normal_test)))
     st.write("Number of test samples in Pneumonia category {}".format(len(files_list_pneu_test)))
 
+
+    rand_img_no = np.random.randint(0,len(files_list_normal_train))
+    img = data_path + '/train/NORMAL/'+ files_list_normal_train[rand_img_no]
+    print(plt.imread(img).shape)
+    img = mpimg.imread(img)
+    # Create a figure and an axes
+    fig, ax = plt.subplots()
+    # Display the image
+    ax.imshow(img)
+    st.write('Sample image from the NORMAL class')
+    st.pyplot(fig)
+
 #run the app
 if __name__ == "__main__":
     app()
