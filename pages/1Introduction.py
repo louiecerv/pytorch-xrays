@@ -91,7 +91,7 @@ def app():
     st.write(f'Number of train images: {len(train_data)}')
     st.write(f'Number of test images: {len(test_data)}')
 
-    if st.("Begin Training"):
+    if st.button("Begin Training"):
         use_cuda = torch.cuda.is_available()
         device = torch.device("cuda" if use_cuda else "cpu")
         print("Available processor {}".format(device))
