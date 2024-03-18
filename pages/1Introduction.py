@@ -69,6 +69,28 @@ def app():
     ax.set_title('Randomly Selected Sample Image from the PNEUMONIA Class')
     st.pyplot(fig)
 
+    train_transform = transforms.Compose([
+    transforms.Resize(224),
+    transforms.CenterCrop(224),
+    transforms.ToTensor(),
+    transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])])
+
+    test_transform = transforms.Compose([
+        transforms.Resize(224),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
+
+    train_data = datasets.ImageFolder(os.path.join(data_path, 'train'), transform= train_transform)
+    test_data = datasets.ImageFolder(os.path.join(data_path, 'test'), transform= test_transform)
+
+    train_loader = DataLoader(train_data, batch_size= 16, shuffle= True, pin_memory= True)
+    test_loader = DataLoader(test_data, batch_size= 1, shuffle= False, pin_memory= True)
+    class_names = train_data.classes
+    print(class_names)
+    st.write(f'Number of train images: {len(train_data)}')
+    st.write(f'Number of test images: {len(test_data)}')
+
 #run the app
 if __name__ == "__main__":
     app()
