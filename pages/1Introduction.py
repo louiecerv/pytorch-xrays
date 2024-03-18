@@ -96,35 +96,54 @@ def app():
         device = torch.device("cuda" if use_cuda else "cpu")
         st.write("Available processor {}".format(device))
         model = Net().to(device)
-        summary_output = summary(model, input_size=(3, 224, 224))
-        st.write(summary_output)
+        show_model_summary(model, input_size=(3, 224, 224))
+
+
+def show_model_summary(model, input_size):
+    """Displays the model summary in a Streamlit app.
+    Args:
+        model: PyTorch model object.
+        input_size: Input size for the model (tuple).
+    """
+    st.header("Model Summary")
+
+    # Capture model summary as string using StringIO
+    from io import StringIO
+    buffer = StringIO()
+    summary(model, input_size=(3, 224, 224))
+    summary_str = buffer.getvalue()
+
+    # Display the summary string
+    st.code(summary_str, language="python")
+
+
 
 
 class Net(nn.Module):
-  def __init__(self):
-    super(Net, self).__init__()
-    # Input Block
-    self.convblock1 = nn.Sequential(nn.Conv2d(in_channels=3, out_channels=8,
-      kernel_size=(3, 3),
-      padding=0, bias=False), nn.ReLU(),
-      #nn.BatchNorm2d(4)
-    )
+def __init__(self):
+super(Net, self).__init__()
+# Input Block
+self.convblock1 = nn.Sequential(nn.Conv2d(in_channels=3, out_channels=8,
+    kernel_size=(3, 3),
+    padding=0, bias=False), nn.ReLU(),
+    #nn.BatchNorm2d(4)
+)
 
-    self.pool11 = nn.MaxPool2d(2, 2)
-    # CONVOLUTION BLOCK
-    self.convblock2 = nn.Sequential(nn.Conv2d(in_channels=8, out_channels=16,
-      kernel_size=(3, 3), padding=0, bias=False),
-      nn.ReLU(),
-      #nn.BatchNorm2d(16)
-    )
+self.pool11 = nn.MaxPool2d(2, 2)
+# CONVOLUTION BLOCK
+self.convblock2 = nn.Sequential(nn.Conv2d(in_channels=8, out_channels=16,
+    kernel_size=(3, 3), padding=0, bias=False),
+    nn.ReLU(),
+    #nn.BatchNorm2d(16)
+)
 
-    # TRANSITION BLOCK
-    self.pool22 = nn.MaxPool2d(2, 2)
-    self.convblock3 = nn.Sequential(
-    nn.Conv2d(in_channels=16, out_channels=10, kernel_size=(1, 1), padding=0, bias=False),
-    #nn.BatchNorm2d(10),
-    nn.ReLU()
-    )
+# TRANSITION BLOCK
+self.pool22 = nn.MaxPool2d(2, 2)
+self.convblock3 = nn.Sequential(
+nn.Conv2d(in_channels=16, out_channels=10, kernel_size=(1, 1), padding=0, bias=False),
+#nn.BatchNorm2d(10),
+nn.ReLU()
+)
 
     self.pool33 = nn.MaxPool2d(2, 2)
 
