@@ -9,3 +9,4 @@ torch
 torchvision
 torchsummary
 tqdm
+ipython
