@@ -3,7 +3,7 @@ matplotlib
 pandas
 seaborn
 numpy
-opencv-python
+opencv-python-headless
 Pillow
 torch
 torchvision
