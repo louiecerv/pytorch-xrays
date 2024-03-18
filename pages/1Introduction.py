@@ -110,7 +110,7 @@ def show_model_summary(model, input_size):
     # Capture model summary as string using StringIO
     from io import StringIO
     buffer = StringIO()
-    summary(model, input_size=(3, 224, 224), col_width=80, print_fn=lambda x: buffer.write(x + "\n"))
+    summary(model, input_size=(3, 224, 224), print_fn=lambda x: buffer.write(x + "\n"))
     summary_str = buffer.getvalue()
 
     # Display the summary string
