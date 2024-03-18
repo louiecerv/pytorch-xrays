@@ -50,7 +50,7 @@ def app():
 
     rand_img_no = np.random.randint(0,len(files_list_normal_train))
     img = data_path + '/training_set/NORMAL/'+ files_list_normal_train[rand_img_no]
-    print(plt.imread(img).shape)
+    st.write(plt.imread(img).shape)
     img = mpimg.imread(img)
     # Create a figure and an axes
     fig, ax = plt.subplots()
@@ -60,7 +60,7 @@ def app():
     st.pyplot(fig)
 
     img = data_path + '/training_set/PNEUMONIA/'+ files_list_pneu_train[np.random.randint(0,len(files_list_pneu_train))]
-    print(plt.imread(img).shape)
+    st.write(plt.imread(img).shape)
     img = mpimg.imread(img)
     # Create a figure and an axes
     fig, ax = plt.subplots()
@@ -87,14 +87,14 @@ def app():
     train_loader = DataLoader(train_data, batch_size= 16, shuffle= True, pin_memory= True)
     test_loader = DataLoader(test_data, batch_size= 1, shuffle= False, pin_memory= True)
     class_names = train_data.classes
-    print(class_names)
+    st.write(class_names)
     st.write(f'Number of train images: {len(train_data)}')
     st.write(f'Number of test images: {len(test_data)}')
 
     if st.button("Begin Training"):
         use_cuda = torch.cuda.is_available()
         device = torch.device("cuda" if use_cuda else "cpu")
-        print("Available processor {}".format(device))
+        st.write("Available processor {}".format(device))
         model = Net().to(device)
         summary(model, input_size=(3, 224, 224))
 
