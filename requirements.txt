@@ -2,9 +2,10 @@ streamlit
 matplotlib
 pandas
 seaborn
-scikit-learn
 numpy
-torch
 opencv-python
+Pillow
+torch
 torchvision
 torchsummary
+tqdm
