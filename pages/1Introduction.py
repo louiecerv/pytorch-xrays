@@ -56,7 +56,7 @@ def app():
     fig, ax = plt.subplots()
     # Display the image
     ax.imshow(img)
-    st.write('Randomly Selected Sample Image from the NORMAL Class')
+    ax.set_title('Randomly Selected Sample Image from the NORMAL Class')
     st.pyplot(fig)
 
 #run the app
