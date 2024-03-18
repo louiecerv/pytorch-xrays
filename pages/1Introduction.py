@@ -45,7 +45,7 @@ def app():
     st.write("Number of train samples in Normal category {}".format(len(files_list_normal_train)))
     st.write("Number of train samples in Pneumonia category {}".format(len(files_list_pneu_train)))
     st.write("Number of test samples in Normal category {}".format(len(files_list_normal_test)))
-    st.write("N`umber of test samples in Pneumonia category {}".format(len(files_list_pneu_test)))
+    st.write("Number of test samples in Pneumonia category {}".format(len(files_list_pneu_test)))
 
 #run the app
 if __name__ == "__main__":
