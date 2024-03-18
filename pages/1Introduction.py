@@ -38,8 +38,8 @@ def app():
     st.write(text)
 
     data_path = 'dataset'
-    files_list_normal_train = get_list_files(data_path + '/train_set/'+class_name[0])
-    files_list_pneu_train = get_list_files(data_path+'/train_set/'+class_name[1])
+    files_list_normal_train = get_list_files(data_path + '/training_set/'+class_name[0])
+    files_list_pneu_train = get_list_files(data_path+'/training_set/'+class_name[1])
     files_list_normal_test = get_list_files(data_path+'/test_set/'+class_name[0])
     files_list_pneu_test = get_list_files(data_path+'/test_set/'+class_name[1])
     st.write("Number of train samples in Normal category {}".format(len(files_list_normal_train)))
