@@ -111,11 +111,11 @@ def app():
             st.write('current Learning Rate: ', optimizer.state_dict()["param_groups"][0]["lr"])
             test(model, device, test_loader)
 
-        train_losses1 = [float(i.cpu().detach().numpy()) for i in
+        train_losses = [float(i.cpu().detach().numpy()) for i in
         train_losses]
-        train_acc1 = [i for i in train_acc]
-        test_losses1 = [i for i in test_losses]
-        test_acc1 = [i for i in test_acc]
+        train_acc = [i for i in train_acc]
+        test_losses = [i for i in test_losses]
+        test_acc = [i for i in test_acc]
         fig, axs = plt.subplots(2,2,figsize=(16,10))
         axs[0, 0].plot(train_losses1,color='green')
         axs[0, 0].set_title("Training Loss")
