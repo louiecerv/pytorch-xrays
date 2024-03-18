@@ -9,7 +9,6 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-%matplotlib inline
 from PIL import Image
 from IPython.display import display
 import torch
