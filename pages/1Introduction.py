@@ -96,7 +96,8 @@ def app():
         device = torch.device("cuda" if use_cuda else "cpu")
         st.write("Available processor {}".format(device))
         model = Net().to(device)
-        summary(model, input_size=(3, 224, 224))
+        summary_output = summary(model, input_size=(3, 224, 224))
+        st.write(summary_output)
 
 
 class Net(nn.Module):
