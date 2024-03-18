@@ -95,27 +95,89 @@ def app():
     if st.button("Begin Training"):
         use_cuda = torch.cuda.is_available()
         device = torch.device("cuda" if use_cuda else "cpu")
-        st.write("Available processor {}".format(device))
+
+        train_losses = []
+        test_losses = []
+        train_acc = []
+        test_acc = []
+
         model = Net().to(device)
-        #show_model_summary(model, input_size=(3, 224, 224))
-        st.write(torchsummary.summary(model, input_size=(3, 224, 224)))
+        optimizer = torch.optim.SGD(model.parameters(), lr=0.01,
+        momentum=0.9)
+        scheduler = StepLR(optimizer, step_size=6, gamma=0.5)
+
+        EPOCHS = 3
+        for epoch in range(EPOCHS):
+            st.write("EPOCH:", epoch)
+            train(model, device, train_loader, optimizer, epoch)
+            scheduler.step()
+            st.write('current Learning Rate: ', optimizer.state_dict()["param_groups"][0]["lr"])
+            test(model, device, test_loader)
+
+        train_losses1 = [float(i.cpu().detach().numpy()) for i in
+        train_losses]
+        train_acc1 = [i for i in train_acc]
+        test_losses1 = [i for i in test_losses]
+        test_acc1 = [i for i in test_acc]
+        fig, axs = plt.subplots(2,2,figsize=(16,10))
+        axs[0, 0].plot(train_losses1,color='green')
+        axs[0, 0].set_title("Training Loss")
+        axs[1, 0].plot(train_acc1,color='green')
+        axs[1, 0].set_title("Training Accuracy")
+        axs[0, 1].plot(test_losses1)
+        axs[0, 1].set_title("Test Loss")
+        axs[1, 1].plot(test_acc1)
+        axs[1, 1].set_title("Test Accuracy")
+        st.pyplot(fig)
+    
+def train(model, device, train_loader, optimizer, epoch):
+    model.train()
+    pbar = tqdm(train_loader)
+    correct = 0
+    processed = 0
+    for batch_idx, (data, target) in enumerate(pbar):
+        # get data
+        data, target = data.to(device), target.to(device)
+        # Initialization of gradient
+        optimizer.zero_grad()
+        # In PyTorch, gradient is accumulated over backprop and even though thats used in RNN generally not used in CNN
+        # or specific requirements
+        ## prediction on data
+        y_pred = model(data)
+        # Calculating loss given the prediction
+        loss = F.nll_loss(y_pred, target)
+        train_losses.append(loss)
+        # Backprop
+        loss.backward()
+        optimizer.step()
+        # get the index of the log-probability corresponding to the max value
+        pred = y_pred.argmax(dim=1, keepdim=True)
+        correct += pred.eq(target.view_as(pred)).sum().item()
+        processed += len(data)
+        pbar.set_description(desc= f'Loss={loss.item()} Batch_id={batch_idx} Accuracy={100*correct/processed:0.2f}')
+        train_acc.append(100*correct/processed)
+
+def test(model, device, test_loader):
+    model.eval()
+    test_loss = 0
+    correct = 0
+    with torch.no_grad():
+        for data, target in test_loader:
+        data, target = data.to(device), target.to(device)
+        output = model(data)
+        test_loss += F.nll_loss(output, target,
+        reduction='sum').item()
+        pred = output.argmax(dim=1, keepdim=True)
+        correct += pred.eq(target.view_as(pred)).sum().item()
+
+    test_loss /= len(test_loader.dataset)
+    test_losses.append(test_loss)
+    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{}({:.2f}%)\n'.format(test_loss,
+        correct, len(test_loader.dataset), 100. * correct / len(test_loader.dataset)))
+    test_acc.append(100. * correct / len(test_loader.dataset))
 
 
-def show_model_summary(model, input_size):
-    """Displays the model summary in a Streamlit app.
-    Args:
-        model: PyTorch model object.
-        input_size: Input size for the model (tuple).
-    """
-    import contextlib  # For capturing standard output
-    st.subheader("Model Summary")
 
-    # Capture standard output using a context manager
-    with contextlib.redirect_stdout(None):  # Redirect stdout to nowhere
-        summary_str = summary(model, input_size=(3, 224, 224))
-
-    # Display the summary string
-    st.code(summary_str, language="python")
 
 class Net(nn.Module):
     def __init__(self):

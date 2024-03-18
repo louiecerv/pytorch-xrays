@@ -8,5 +8,5 @@ Pillow
 torch
 torchvision
 torchsummary
-tqdm
+fitqdm
 ipython
