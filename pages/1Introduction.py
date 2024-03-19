@@ -73,10 +73,10 @@ def app():
     st.pyplot(fig)
 
     train_transform = transforms.Compose([
-    transforms.Resize(224),
-    transforms.CenterCrop(224),
-    transforms.ToTensor(),
-    transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])])
+        transforms.Resize(224),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])])
 
     test_transform = transforms.Compose([
         transforms.Resize(224),
@@ -97,8 +97,6 @@ def app():
     if st.button("Begin Training"):
         use_cuda = torch.cuda.is_available()
         device = torch.device("cuda" if use_cuda else "cpu")
-
-
 
         model = Net().to(device)
         optimizer = torch.optim.SGD(model.parameters(), lr=0.01,
@@ -174,9 +172,6 @@ def test(model, device, test_loader):
     st.write('\nTest set: Average loss: {:.4f}, Accuracy: {}/{}({:.2f}%)\n'.format(test_loss,
         correct, len(test_loader.dataset), 100. * correct / len(test_loader.dataset)))
     test_acc.append(100. * correct / len(test_loader.dataset))
-
-
-
 
 class Net(nn.Module):
     def __init__(self):
