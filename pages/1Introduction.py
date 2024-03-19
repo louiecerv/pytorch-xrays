@@ -18,6 +18,10 @@ from torchvision import datasets, transforms, models
 from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
 
+import contextlib
+from functools import wraps
+from io import StringIO
+
 train_losses = []
 test_losses = []
 train_acc = []
@@ -106,10 +110,11 @@ def app():
         EPOCHS = 3
         for epoch in range(EPOCHS):
             st.write("EPOCH:", epoch)
-            train(model, device, train_loader, optimizer, epoch)
+            
+            stprint = capture_output(train(model, device, train_loader, optimizer, epoch))
             scheduler.step()
             st.write('current Learning Rate: ', optimizer.state_dict()["param_groups"][0]["lr"])
-            test(model, device, test_loader)
+            stprint = capture_output(test(model, device, test_loader))
 
         train_losses = [float(i.cpu().detach().numpy()) for i in
         train_losses]
@@ -279,6 +284,30 @@ class Net(nn.Module):
         x = self.convblockout(x)
         x = x.view(-1, 2)
         return F.log_softmax(x, dim=-1)
+
+
+
+def capture_output(func):
+    """Capture output from running a function and write using streamlit."""
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        # Redirect output to string buffers
+        stdout, stderr = StringIO(), StringIO()
+        try:
+            with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+                return func(*args, **kwargs)
+        except Exception as err:
+            st.write(f"Failure while executing: {err}")
+        finally:
+            if _stdout := stdout.getvalue():
+                st.write("Execution stdout:")
+                st.code(_stdout)
+            if _stderr := stderr.getvalue():
+                st.write("Execution stderr:")
+                st.code(_stderr)
+
+    return wrapper
 
 #run the app
 if __name__ == "__main__":
